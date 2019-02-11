@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CrimeScene</title>
+    <link rel="icon" href="img/titleGun.png">
+    <!--titleIcon-->
+
+    <!--web font-->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/glitch-slideshow.css">
+
+    <!--glitch-->
+    <script type="text/javascript"> 
+        document.documentElement.className = "js";
+        var supportsCssVars = function() {
+            var e, t = document.createElement("style");
+            return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e
+        };
+        /*supportsCssVars()||alert("Please view this website in a modern browser.");*/
+    </script>
+    
+    <!--scroll-->
+    <script type="text/javascript">
+        var unitNum1 = 0;
+        var unitNum2 = 0;
+        var unitNum3 = 0;
+        var unitNum4 = 0;
+        var boxNum = 0;
+        var slideNum = 3;
+        var testNum = 0;
+        
+        window.onload = function () {
+            $(".box").each(function () {
+                // 개별적으로 Wheel 이벤트 적용
+                $(this).on("mousewheel DOMMouseScroll", function (e) {
+                    e.preventDefault();
+                    var delta = 0;
+                    
+                    var currentScroll = $(".navi3 .currentpage").data("target");
+                    var newScroll = "";
+                    var scrollResult = "";
+                    var newScrollNum = "";
+                    console.log("currentScroll : "+currentScroll);
+                    
+                    if (!event) event = window.event;
+                    if (event.wheelDelta) {
+                        delta = event.wheelDelta / 120; // 마우스휠 1번 = wheelDelta값 120
+                        if (window.opera) delta = -delta;
+                    } else if (event.detail) delta = -event.detail / 3;
+                    var moveTop = null;
+                    
+                    // 마우스휠을 위에서 아래로
+                    if (delta < 0) {
+                        if ($(this).next() != undefined) {
+                            moveTop = $(this).next().offset().top;
+                            
+                            newScroll = currentScroll.substring(currentScroll.length-1, currentScroll.length);
+                            console.log("newScroll : "+newScroll);
+                            newScrollNum = parseInt(newScroll)+1;
+                            scrollResult = "#page"+newScrollNum;
+                            console.log("스크롤 위에서 아래 : "+scrollResult);
+                            scrollNavi(scrollResult);
+                            
+                            switch(scrollResult){
+                                case "#page2":
+                                    if(unitNum2 == 0){
+                                        unityping2();
+                                    }
+                                    
+                                    var curteaser = $(".teasers")[0];
+                                    if (curteaser.paused == false) {
+                                        curteaser.pause();
+                                    }else{
+                                        console.log("멈춤 실패");
+                                    }
+                                break;
+                                    
+                                case "#page3":
+                                    if(unitNum3 == 0){
+                                        unityping3();
+                                    }
+                                    
+                                    var curteaser = $(".teasers")[0];
+                                    console.log(curteaser.currentTime+" / "+curteaser.paused);
+                                    if (curteaser.currentTime == 0 || curteaser.paused == true) {
+                                        curteaser.play();
+                                    }
+                                    txtup(e);
+                                break;    
+                            }
+                        }  
+                    // 마우스휠을 아래에서 위로
+                    } else {
+                        if ($(this).prev() != undefined) {
+                            moveTop = $(this).prev().offset().top;
+                            
+                            newScroll = currentScroll.substring(currentScroll.length-1, currentScroll.length);
+                            console.log("newScroll : "+newScroll);
+                            newScrollNum = parseInt(newScroll)-1;
+                            scrollResult = "#page"+newScrollNum;
+                            console.log("스크롤 아래에서 위 : "+scrollResult);
+                            scrollNavi(scrollResult);
+                            
+                            switch(scrollResult){
+                                case "#page1":
+                                    if(unitNum1 == 0){
+                                        unityping();
+                                    }
+                                    
+                                    var curteaser = $(".teasers")[0];
+                                    if (curteaser.paused == false) {
+                                        curteaser.pause();
+                                    }else{
+                                        console.log("멈춤 실패");
+                                    }
+                                break;
+                                    
+                                case "#page2":
+                                    if(unitNum2 == 0){
+                                        unityping2();
+                                    }
+                                    
+                                    var curteaser = $(".teasers")[0];
+                                    if (curteaser.paused == false) {
+                                        curteaser.pause();
+                                    }else{
+                                        console.log("멈춤 실패");
+                                    }
+                                break;
+                                    
+                                case "#page3":
+                                    if(unitNum3 == 0){
+                                        unityping3();
+                                    }
+                                    
+                                    var curteaser = $(".teasers")[0];
+                                    console.log(curteaser.currentTime+" / "+curteaser.paused);
+                                    if (curteaser.currentTime == 0 || curteaser.paused == true) {
+                                        curteaser.play();
+                                    }
+                                    txtup(e);
+                                break;    
+                            }
+                        }
+                    }
+                    
+                    // 화면 이동
+                    $("html,body").stop().animate({
+                        scrollTop: moveTop + 'px'
+                    }, {
+                        duration: 500,
+                        complete: function() {
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+    
+    <style>
+        html,body{
+            margin:0; padding:0;
+            width:100%; height:100%;
+        }
+        
+        .box{
+            width:100%; height:100%;
+            position:relative;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="demo-2" style="overflow: hidden;">
+    <main>
+        <!--navigation-->
+        <!--<div class="b-here b-back">
+            <div class="navi2" style="display: table;">
+                <ul style="text-align: center; display: table-cell; height: 100%; vertical-align: middle;">
+                    <li>
+                        <div class="glitch" data-text="홈">홈</div>
+                    </li>
+                    <li>
+                        <div class="glitch" data-text="사건 개요">사건 개요</div>
+                    </li>
+                    <li>
+                        <div class="glitch" data-text="용의자">용의자</div>
+                    </li>
+                    <li>
+                        <div class="glitch" data-text="예고 영상">예고 영상</div>
+                    </li>
+                    <li>
+                        <div class="glitch" data-text="이벤트">이벤트</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="snsAlign">
+                <img src="img/facebook_w.png" id="facebook" onclick="javascript:newin=window.open('about:blank'); newin.location.href='https://www.facebook.com/crimescene.jtbc'" class="sns" />
+                <img src="img/insta_w.png" id="insta" onclick="javascript:newin=window.open('about:blank'); newin.location.href='https://www.instagram.com/crimescene.jtbc/'" class="sns" />
+            </div>
+            
+            <div id="formula1"><img src="img/formula1.png"/></div>
+            <div id="formula2"><img src="img/formula2.png"/></div>
+            
+            <div class="tape able"></div>
+            <div class="tape2 able"></div>
+            
+            <div class="suspect"></div>
+            <div class="target"></div>
+        </div>-->
+
+        <div class="navi">
+            <img src="img/logo.png" id="csLogo"/>
+            <div class="button">
+                <a href="http://tv.jtbc.joins.com/replay/pr10010450/pm10042821" target="_blank">
+                    VIEW
+                    <span class="shift">›</span>
+                </a>
+                <div class="mask"></div>
+            </div>
+            <!--<div class="b-container">
+                <div class="b-menu">
+                    <div class="b-align">
+                        <div class="b-bun b-bun--top"></div>
+                        <div class="b-bun b-bun--mid"></div>
+                        <div class="b-bun b-bun--bottom"></div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        <div id="logo" onclick="logoClick()"><img src="img/prevPage.png"/></div>
+        
+        <div class="tv">
+            <!--화면 전환 효과-->
+            <div class="tvInside"></div>
+        </div>
+
+
+        <!--home-->
+        <div class="content">
+            <nav class="slide-nav">
+                <div class="slide-nav__align">
+                    <div class="slide__titleAlign">
+                        <p class="slide__description">
+                            살인사건을 둘러싼 치열한 추리 게임, 크라임씬!<br />
+                            사건 현장에 모인 플레이어들은 모두 용의자이며, 범인은 자신에게 유리한 거짓말을 할 수 있다.<br />
+                            누구도 믿을 수 없는 상황 속, 탐정과 용의자들은 오직 단서와 직감을 통해 사건의 진범을 찾아내야 한다.<br />그 어느 때보다 더욱 어려워진 사건들, 과연 숨 막히는 추리 전쟁의 승자는?
+                        </p>
+                        <div class="center">
+                            <!--about.html로 변경-->
+                            <a href="#" class="cd-btn">more+</a>
+                        </div>
+
+                        <div class="slide__btnAlign">
+                            <button class="slide-nav__button prev" style="float: left;">
+                                <span>─</span>
+                            </button>
+                            <div class="dots">
+                                <div class="currentDot" id="dot1" style="left:0%;"></div>
+                                <div id="dot2" style="left: 50%; transform: translateX(-50%) translateY(-50%);"></div>
+                                <div id="dot3" style="right: 0%;"></div>
+                            </div>
+                            <button class="slide-nav__button next" style="float: right;">
+                                <span>┼</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="backBg" style="display:none;"></div>
+
+            <div class="slides slides--contained effect-2">
+                <div class="slide slide--current">
+                    <div class="slide__img glitch" style="background-image: url(img/glitch/bg1.png);"></div>
+                    <div class="slide__text">
+                        <h3 class="slide__title">CRIME SCENE3</h3>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide__img glitch" style="background-image: url(img/glitch/bg2.png);"></div>
+                    <div class="slide__text">
+                        <h3 class="slide__title">TODAY'S NEWS</h3>
+                    </div>
+                    <div class="newsCont">
+                        <video class="news" width="400px" style="display: none;">
+                            <!--hidden video-->
+                            <source src="video/news.mp4" type="video/mp4"/>
+                        </video>
+                        <div class="menu-icon"></div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide__img glitch" style="background-image: url(img/glitch/bg3.png);"></div>
+                    <div class="slide__text">
+                        <h3 class="slide__title">CASE REPORT</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <canvas id="canvas" style="opacity: 0.07; z-index: 10;"></canvas><!--noise-->
+    </main>
+
+    <!--detail page-->
+    <div class="detail" style="display: none;">
+        <!--<audio id="bgm">
+            <source src="bgm/bgm.mp3" type="audio/mp3"/>
+        </audio>-->
+        
+        <div class="navi3"><!--detail navigation-->
+            <ul>
+                <li data-target="#page1" class="currentpage" id="navipage1"></li>
+                <li data-target="#page2" id="navipage2"></li>
+                <li data-target="#page3" id="navipage3"></li>
+                <!--<li data-target="#page4" id="navipage4"></li>-->
+            </ul>
+        </div>
+        
+        <div class="box" id="page1"><!--사건 개요-->
+            <div class="box_title">
+                <img src="img/detailtitle.png" style="width: auto; height: 100%;"/>
+            </div>
+            <div class="box_content">
+                <div class="box_slidesCont">
+                    <div class="detail_textAlign">
+                        <span class="detailContext" id="summaryCtx1"></span><br/>
+                    </div>
+                    
+                    <div id="summaryLine">
+                        <div id="summaryImg"></div>
+                    </div>
+                    <div class="box_slides">
+                        <img src="img/arrowRight.png" class="boxArrow" onclick="boxArrow()"/>
+                        <div class="box_slides2">
+                            <span id="caseSummary">사건 개요</span><br/><br/>
+                            <span id="caseNum">1 / 2</span><br/>
+                            <img id="caseimg" src="img/caseGun.png"/><br/>
+                            <span id="caseTxt">
+                                사건 시각 : 2017.04.28<br/>
+                                사건 장소 : 저런당 대선캠프 옆 공터<br/>
+                                특이 사항 : 왼쪽 두부의 외상 및 오른쪽 옆구리에 꽂힌 채 발견된 단도
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="box" id="page2"><!--용의자-->
+            <div class="box_popupBg"></div>
+            <div class="suspect_title">
+                <img src="img/suspectTitle.png" style="width: auto; height: 60%; margin:0px 0px 10px 0px;"/><br/>
+                <span class="detailContext" id="summaryCtx2"></span><br/>
+            </div>
+            <div class="box_content">
+                <div class="box_popup"><!--팝업(알리바이)-->
+                    <div class="menu-icon2"></div>
+                </div>
+                
+                <div class="box_slidesCont">
+                    <div id="suspectLine_1" class="suspectLine">
+                        <div class="suspectHover"></div>
+                        <p class="suspectTxt">
+                            <b>성명</b> : 송대표 (71세)<br/>
+                            <b>이력</b> : 한강경제연구소 소장을 지낸 경제 전문가 출신의 정치계 원로이자 와크다특별시 중앙구 6선 국회의원<br/>
+                            <b>피해자와의 관계</b> : 피해자가 속한 저런당의 당대표<br/><br/>
+                            <span class="suspectBtn" id="alibi1" onclick="suspectClick(this)">알리바이 확인&nbsp;&nbsp;›</span>
+                        </p>
+                    </div>
+                    <div id="suspectLine_2" class="suspectLine">
+                        <div class="suspectHover"></div>
+                        <p class="suspectTxt">
+                            <b>성명</b> : 박보좌 (38세)<br/>
+                            <b>이력</b> : '101분 토론', '그것이 알고 싶소' 등 시사 프로그램만 15년째 해온 방송작가 출신의 보좌관<br/>
+                            <b>피해자와의 관계</b> : 이런당 대선캠프 공보 보좌관으로 활동 중인 정치적 견제 대상<br/><br/>
+                            <span class="suspectBtn" id="alibi2" onclick="suspectClick(this)">알리바이 확인&nbsp;&nbsp;›</span>
+                        </p>
+                    </div>
+                    <div id="suspectLine_3" class="suspectLine suspectFocus">
+                        <div class="suspectHover"></div>
+                        <p class="suspectTxt">
+                            <b>성명</b> : 장후보 (54세)<br/>
+                            <b>이력</b> : 대대로 정치를 하는 가문에서 태어난 엘리트이자 와크다특별시 시장을 역임한 3선 국회의원<br/>
+                            <b>피해자와의 관계</b> : 27대 대선에 이런당 후보로 출마하여 피해자와 치열한 경합을 벌이고 있는 정치적 라이벌<br/><br/>
+                            <span class="suspectBtn" id="alibi3" onclick="suspectClick(this)">알리바이 확인&nbsp;&nbsp;›</span>
+                        </p>
+                    </div>
+                    <div id="suspectLine_4" class="suspectLine">
+                        <div class="suspectHover"></div>
+                        <p class="suspectTxt">
+                            <b>성명</b> : 정사모 (54세)<br/>
+                            <b>이력</b> : 대한민국 10대 그룹 중 하나인 '세련 그룹'의 회장<br/>
+                            <b>피해자와의 관계</b> : 피해자의 아내이며 현재 선거 유세를 돕고 있는 조력자<br/><br/>
+                            <span class="suspectBtn" id="alibi4" onclick="suspectClick(this)">알리바이 확인&nbsp;&nbsp;›</span>
+                        </p>
+                    </div>
+                    <div id="suspectLine_5" class="suspectLine">
+                        <div class="suspectHover"></div>
+                        <p class="suspectTxt">
+                            <b>성명</b> : 양알바 (27세)<br/>
+                            <b>이력</b> : 소시민대학교 정치외교학과 4학년 휴학 중인 대한민국 대표 흙수저<br/>
+                            <b>피해자와의 관계</b> : 한 달 전부터 저런당 선거 캠프에서 아르바이트 중인 선거 유세 도우미<br/><br/>
+                            <span class="suspectBtn" id="alibi5" onclick="suspectClick(this)">알리바이 확인&nbsp;&nbsp;›</span>
+                        </p>
+                    </div>
+                    <span class="notice">※ 사진 위에 마우스를 올려주세요.</span>
+                </div>
+                <div class="box_button"><!--slide button-->
+                    <div onclick="suspectSlide_left()"></div>
+                    <div onclick="suspectSlide_right()"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="box" id="page3"><!--예고 영상-->
+            <div class="suspect_title">
+                <img src="img/teaserTitle.png" style="width: auto; height: 60%; margin:0px 0px 10px 0px;"/><br/>
+                <span class="detailContext" id="summaryCtx3"></span><br/>
+            </div>
+            <div class="box_content">
+                <div class="box_slidesCont teaser">
+                    <div class="suspectLine teaserVideo">
+                        <video class="teasers">
+                            <source src="video/teaser.mp4" type="video/mp4"/>
+                        </video>
+                    </div>
+                    <div class="teaserTxt">
+                        <div class="teaserTxt1">
+                            <p>
+                                <img src="img/video1.jpg"/>
+                                두 번째 사건<br style="line-height: 22px;"/>
+                                <span style="font-weight: 100 !important;font-size: 0.85em !important;line-height: 17px; color: white !important">서울 외곽에 위치한 호화 대저택에서 발생한 살인 사건!</span>
+                            </p>
+                        </div>
+                        <div class="teaserTxt2" style="margin: 10px 0px;">
+                            <p>
+                                <img src="img/video2.jpg"/>
+                                세 번째 사건<br style="line-height: 22px;"/>
+                                <span style="font-weight: 100 !important;font-size: 0.85em !important;line-height: 17px; color: white !important">한적한 캠핑장에서 충격적인 살인 사건이 발생했다!</span>
+                            </p>
+                        </div>
+                        <div class="teaserTxt3">
+                            <p>
+                                <img src="img/video3.JPG"/>
+                                네 번째 사건<br style="line-height: 22px;"/>
+                                <span style="font-weight: 100 !important;font-size: 0.85em !important;line-height: 17px; color: white !important">닫힌 커튼 너머로 뮤지컬 여주인공의 비명이 들려온다.</span>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="notice2">※ 편의를 위해 메인 영상만 재생 가능하도록 했습니다.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!--<div class="box" id="page4" style="background-color:green;"></div>-->
+    </div>
+
+    
+    <!--jQuery Resources-->
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/unityping.js"></script><!--typing-->
+    <script src="js/prefixfree.min.js"></script><!--벤더프리픽스(브라우저별 css 적용)-->
+    
+    <!--glitch-->
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/demo.js"></script>
+    <script src="js/demo2.js"></script>
+</body>
+
+    
+<script>
+    /*video play*/
+    function progressClick(){
+        console.log("news 재생 시작");
+        bgresize();
+
+        $(".news").css("display", "block");
+        $(".menu-icon").css("display", "block");
+        console.log($(".news"));
+
+        if ($(".news")[0].currentTime == 0) {
+            $(".news")[0].play();
+        } else {
+            console.log("처음부터 재생 안됨");
+        }
+    }
+    
+    function teaserPlay(){
+        console.log($(".teasers"));
+        if ($(".teasers")[0].currentTime == 0) {
+            $(".teasers")[0].play();
+        } else {
+            console.log("처음부터 재생 안됨");
+        }
+    }
+    
+
+    $(".menu-icon").click(function() {
+        $(".backBg").css("display", "none");
+        $(".news").css("display", "none");
+        $(".menu-icon").css("display", "none");
+        $(".news")[0].pause();
+        $(".news")[0].currentTime = 0;
+    });
+    
+    
+    function bgresize() {
+        $(window).resize(function() {
+            var slideWidth = $(".slides--contained").width();
+            var slideHeight = $(".slides--contained").height();
+            $(".backBg").css({
+                display: "block",
+                width: slideWidth,
+                height: slideHeight
+            });
+        }).resize();
+    }
+    
+    
+    function txtup(e){
+        var top1 = $(".teaserTxt1").position().top;
+        console.log("top1 : "+top1);
+
+        if(top1 != 0){
+            $(".teaserTxt1").animate({top:"0%", opacity:"1"},800, function(){
+                $(".teaserTxt2").animate({top:"0%", opacity:"1"},800, function(){
+                    $(".teaserTxt3").animate({top:"0%", opacity:"1"},800);
+                });
+            });
+        }else{
+            $(".teaserTxt div").css("top","130%");
+            $(".teaserTxt1").animate({top:"0%", opacity:"1"},700, function(){
+                $(".teaserTxt2").animate({top:"0%", opacity:"1"},700, function(){
+                    $(".teaserTxt3").animate({top:"0%", opacity:"1"},700);
+                });
+            });
+        }
+    }
+    
+    $(".teaserTxt div").hover(function(){
+        var thisImg = $(this).find("img")[0];
+        var thisSrc = $(this).find("img")[0].src;
+        var resultSrc = thisSrc.substring(thisSrc.length - 5);
+        console.log(resultSrc);
+        
+        if(resultSrc.indexOf("1") != -1){
+            console.log(resultSrc.indexOf("1"));
+            $(thisImg).attr("src","img/video1_r.jpg");
+        }else if(resultSrc.indexOf("2") != -1){
+            console.log(resultSrc.indexOf("2"));
+            $(thisImg).attr("src","img/video2_r.jpg");
+        }else if(resultSrc.indexOf("3") != -1){
+            console.log(resultSrc.indexOf("3"));
+            $(thisImg).attr("src","img/video3_r.jpg");
+        }else{
+            console.log("결과 없음");
+        }
+        $(this).find("p").css("color","indianred");
+    }, function(){
+        $(this).find("p").css("color","white");
+        var leaveImg = $(this).find("img")[0];
+        var leaveSrc = $(this).find("img")[0].src;
+        var resultLeave = leaveSrc.substring(leaveSrc.length - 7);
+        console.log(resultLeave);
+        
+        if(resultLeave.indexOf("1") != -1){
+            $(leaveImg).attr("src","img/video1.jpg");
+        }else if(resultLeave.indexOf("2") != -1){
+            $(leaveImg).attr("src","img/video2.jpg");
+        }else if(resultLeave.indexOf("3") != -1){
+            $(leaveImg).attr("src","img/video3.jpg");
+        }else{
+            console.log("결과 없음");
+        }
+    });
+    
+    
+    /*detail button*/
+    function boxArrow(){
+        if(boxNum == 0){
+            $(".box_slides2").animate({opacity:"0"},300, function(){
+                $("#caseSummary").html("피해자 정보");
+                $("#caseNum").html("2 / 2");
+                $(".boxArrow").attr("src","img/arrowLeft.png");
+                $("#caseTxt").html("성명 : 정동필 (54세)<br/>출생지 : 와크다특별시 서민구 가난동<br/>이력 : 최연소 검사 및 와크다특별시 시장을 역임한 3선 국회의원");
+                $(".box_slides2").animate({opacity:"1"},300);
+                $("#summaryImg").css("background-image","url('img/victim.png')");
+                $("#summaryImg").animate({width:"100%"},200);
+                boxNum++;
+            });
+        }else{
+            $(".box_slides2").animate({opacity:"0"},400, function(){
+                $("#caseSummary").html("사건 개요");
+                $("#caseNum").html("1 / 2");
+                $(".boxArrow").attr("src","img/arrowRight.png");
+                $("#caseTxt").html("사건 시각 : 2017.04.28<br/>사건 장소 : 저런당 대선캠프 옆 공터<br/>특이 사항 : 왼쪽 두부의 외상 및 오른쪽 옆구리에 꽂힌 채 발견된 단도");
+                $(".box_slides2").animate({opacity:"1"},300);
+                $("#summaryImg").animate({width:"0%"},200, function(){
+                    $("#summaryImg").css("background-image","none");
+                });
+                boxNum = 0;
+            });
+        }
+    }
+    
+    
+    /*detail hover*/
+    $(".suspectLine").hover(function(e){ // e 아니면 event.~~로 쓰기
+        console.log(this.children[0]);
+        var child = this.children[0];
+        var childTxt = this.children[1];
+        $(child).animate({width:"100%"},400);
+        $(childTxt).animate({opacity:"1"},300);
+    },function(){
+        $(".suspectHover").animate({width:"0%"},400);
+        $(".suspectLine p").animate({opacity:"0"},400);
+    });
+    
+    
+    /*detail button click*/
+    function suspectClick(t){
+        var suspectId = $(t).attr("id");
+        console.log("suspectId : "+suspectId);
+        switch(suspectId){
+            case "alibi1":
+                $(".box_popup").css("background-image","url(img/alibi/song.jpg)");
+            break;
+                
+            case "alibi2":
+                $(".box_popup").css("background-image","url(img/alibi/park.jpg)");
+            break;
+                
+            case "alibi3":
+                $(".box_popup").css("background-image","url(img/alibi/jang.jpg)");
+            break;
+                
+            case "alibi4":
+                $(".box_popup").css("background-image","url(img/alibi/jeong.jpg)");
+            break;
+                
+            case "alibi5":
+                $(".box_popup").css("background-image","url(img/alibi/yang.jpg)");
+            break;    
+        }
+        
+        $(".box_popup").css("display","block");
+        $(".box_popupBg").css("display","block");
+        $(".box_popup").animate({opacity:"1"},800);
+        $(".box_popupBg").animate({opacity:"0.4"},800);
+    }
+    
+    $(".menu-icon2").click(function(){
+        $(".box_popup").animate({opacity:"0"},800, function(){
+            $(".box_popup").css("display","none");
+        });
+        $(".box_popupBg").animate({opacity:"0"},800, function(){
+            $(".box_popupBg").css("display","none");
+        });
+    });
+    
+    
+    $(".box_button div").hover(function(e){
+        var thisButton = this;
+        $(thisButton).css("background-color","indianred");
+        $(thisButton).css("border","0.5px solid indianred");
+    }, function(){
+        $(".box_button div").css("background-color","");
+        $(".box_button div").css("border","0.5px solid darkgray");
+    });
+    
+    
+    /*화면 전환 (back)*/
+    function logoClick(){
+        /*bgmStop();*/
+        var curteaser = $(".teasers")[0];
+        if (curteaser.paused == false) {
+            curteaser.pause();
+        }else{
+            console.log("멈춤 실패");
+        }
+        
+        $(".detail").animate({opacity:"0"},300, function(){
+            $("#logo").css("opacity","0");
+            $(".navi3").css("right","-3%");
+            var goto1 = $("#page1").offset().top;
+            $("html, body").animate({scrollTop: goto1}, 100);
+            $(".navi3 li").removeClass("currentpage");
+            $(".navi3 #navipage1").addClass("currentpage");
+            $(".detail").css("display", "none");
+            $(".tv").css("z-index","9");
+            $(".tv").animate({height:"0.4%"},"slow", function(){
+                $(".tv").animate({width:"30%"},"slow", function(){
+                    $(".tvInside").animate({width:"0%"},1000, function(){
+                        $(".tv").animate({width:"100%"},"slow", function(){
+                            $(".tv").animate({height:"100%"},"slow", function(){
+                                $(".tv").animate({opacity:"0"},100);
+                                $(".tv").css("z-index","");
+                                $(".content").animate({opacity:"1"}, 350);
+                            });
+                        });
+                    });
+                });
+                
+                $(".box_title").css("opacity","0");
+                $(".box_title").css({top:"50%",height:"105px"});
+                $("#summaryLine").css({backgroundcolor:"dimgray", border:"1px solid dimgray", backgroundImage:"", width:"0px", height:"0%"});
+                $(".box_slides").css("right","-80%");
+                if(testNum == 259){
+                    $("#summaryCtx1").html("");
+                    testNum = 0;
+                }
+            });
+            
+            setTimeout(function(){
+                $("#csLogo").attr("src", "img/logo.png");
+                $(".button").css({border:"0.3px solid dimgray"});
+                $(".button a").css({color:"dimgray"});
+            },100);
+        });
+    }
+    
+    $("#logo img").hover(function(){
+        $("#logo").css("cursor","pointer");
+    /*},function(){
+        $("#logo").animate({left:"3.5%"},700);*/
+    });
+    
+    
+    /*slide*/
+    function suspectSlide_right(e){
+        if(slideNum != 5){
+            slideNum++;
+            $(".suspectLine").removeClass("suspectFocus");
+            if(!$(".box_slidesCont div").hasClass("suspectFocus")){
+                $("#suspectLine_" + slideNum).addClass("suspectFocus");
+            };
+
+            var prevNum = slideNum-2;
+            var nextSlide = $("#suspectLine_" + slideNum).next()[0];
+            var prevSlide = $("#suspectLine_" + prevNum)[0];
+            console.log("slideNum/prevNum : "+slideNum+" / "+prevNum);
+
+            if($(nextSlide).css("display") == "none"){
+                $(nextSlide).css("display","inline-block");
+                $(prevSlide).animate({opacity:"0"},400);
+                $(prevSlide).css("display","none");
+                $(nextSlide).animate({opacity:"1"},700);
+            }
+        }
+    }
+    
+    function suspectSlide_left(e){
+        if(slideNum != 1){
+            slideNum--;
+            $(".suspectLine").removeClass("suspectFocus");
+            if(!$(".box_slidesCont div").hasClass("suspectFocus")){
+                $("#suspectLine_" + slideNum).addClass("suspectFocus");
+            };
+
+            var nextNum = slideNum+2;
+            var nextSlide2 = $("#suspectLine_" + slideNum).prev()[0];
+            var prevSlide2 = $("#suspectLine_" + nextNum)[0];
+            console.log("slideNum/prevNum : "+slideNum+" / "+nextNum);
+
+            if($(nextSlide2).css("display") == "none"){
+                $(nextSlide2).css("display","inline-block");
+                $(prevSlide2).animate({opacity:"0"},400);
+                $(prevSlide2).css("display","none");
+                $(nextSlide2).animate({opacity:"1"},700);
+            }
+        }   
+    }
+    
+    
+    
+    $(document).ready(function() {
+        var slideWidth = $(".slides--contained").width();
+        var slideHeight = $(".slides--contained").height();
+        console.log("slideWidth : " + slideWidth + " / slideHeight : " + slideHeight);
+
+        /*noise*/
+        var manageNoise = {
+            canvas: document.getElementById("canvas"),
+            resize: function() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+        };
+
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.onresize = resize;
+
+        function noise(ctx) {
+            var w = ctx.canvas.width,
+                h = ctx.canvas.height,
+                idata = ctx.createImageData(w, h),
+                buffer32 = new Uint32Array(idata.data.buffer),
+                len = buffer32.length,
+                i = 0;
+
+            for (; i < len;)
+                buffer32[i++] = ((255 * Math.random()) | 0) << 24;
+
+            ctx.putImageData(idata, 0, 0);
+        }
+
+        var toggle = true;
+
+        function loop() {
+            toggle = !toggle;
+            if (toggle) {
+                requestAnimationFrame(loop);
+                return;
+            }
+            noise(ctx);
+            requestAnimationFrame(loop);
+        };
+        loop();
+    });
+
+    /*menu*/
+    /*'use strict';
+    (function() {
+        var burgerMenu = document.getElementsByClassName('b-menu')[0];
+        var burgerContain = document.getElementsByClassName('b-container')[0];
+        //var burgerNav = document.getElementsByClassName('b-nav')[0];
+
+        burgerMenu.addEventListener('click', function toggleClasses() {
+            [burgerContain].forEach(function(el) {
+                el.classList.toggle('open');
+            });
+
+            //메뉴 닫기
+            if ($(".b-container").hasClass("open")) {
+                //홈
+                if($("#formula1").offset().left == "3.5%"){
+                    $("#formula1").css("left","-30%");
+                    $("#formula2").css("left","-27%");
+                }
+                
+                //용의자
+                $(".suspect").animate({
+                    left: "100%"
+                }, 500);
+                $(".target").animate({
+                    opacity: "0"
+                }, 500);
+            };
+
+            if ($(".b-back").hasClass("b-here")) {
+                $(".b-back").css("display", "block");
+                $(".b-back").css("z-index", "10");
+                $(".b-back").animate({
+                    opacity: "0.9"
+                }, 400);
+                $(".b-back").removeClass("b-here");
+            } else {
+                $(".b-back").animate({
+                    opacity: "0"
+                }, 400, function() {
+                    $(".b-back").css("display", "none");
+                });
+                $(".b-back").css("z-index", "1");
+                $(".b-back").addClass("b-here");
+            }
+        }, false);
+    })();*/
+    
+    /*navi2 mouseenter & mouseout*/
+    /*$(".glitch").mouseenter(function() {
+        var glitchText = $(this).data("text");
+        console.log(glitchText);
+
+        switch (glitchText) {
+            case "홈":
+                if ($(".target").css("opacity") == "0.9") {
+                    $(".suspect").animate({
+                        left: "100%"
+                    }, 500);
+                    $(".target").animate({
+                        opacity: "0"
+                    }, 500);
+                }
+                
+                if($("#formula1").offset().left == "-30%"){
+                    $("#formula1").animate({left: "3.5%"}, 500);
+                    $("#formula2").animate({right: "3.5%"}, 500);
+                }else{
+                    console.log("")
+                }
+                break;
+
+            case "사건 개요":
+                if ($(".target").css("opacity") == "0.9") {
+                    $(".suspect").animate({
+                        left: "100%"
+                    }, 800);
+                    $(".target").animate({
+                        opacity: "0"
+                    }, 800);
+                }
+
+                //if($(".tape").hasClass("able")){
+                //    for(i=0;i<11;i++){
+                //        console.log(i);
+                //        $(".tape").animate({right: "+=1vw", top: "+=10vh"}, 50);
+                //        $(".tape2").animate({left: "+=2.5vw", bottom: "+=9.8vh"}, 50);
+                //    };
+                //}
+                break;
+
+            case "용의자":
+                $(".suspect").animate({
+                    left: "-0.5%"
+                }, 1000);
+                $(".target").animate({
+                    opacity: "0.9"
+                }, 1000);
+                break;
+
+            case "예고 영상":
+                if ($(".target").css("opacity") == "0.9") {
+                    $(".suspect").animate({
+                        left: "100%"
+                    }, 500);
+                    $(".target").animate({
+                        opacity: "0"
+                    }, 500);
+                }
+                break;
+
+            case "이벤트":
+                if ($(".target").css("opacity") == "0.9") {
+                    $(".suspect").animate({
+                        left: "100%"
+                    }, 500);
+                    $(".target").animate({
+                        opacity: "0"
+                    }, 500);
+                }
+                break;
+        }
+    });*/
+
+
+    /*navi button*/
+    const body = document.body;
+    const btn = document.querySelectorAll(".button")[0];
+
+    btn.addEventListener("mouseenter", () => {
+        body.classList.add("show");
+    });
+
+    btn.addEventListener("mouseleave", () => {
+        body.classList.remove("show");
+    });
+
+    $(".next").click(function() {
+        var currentImg = $(".slide--current")[0].children[0].style.backgroundImage;
+        console.log(currentImg);
+        var currentPlus = currentImg.substring(currentImg.length - 7); // length() 안되면 괄호 빼보기
+        console.log(currentPlus);
+        var currentResult = parseInt(currentPlus) + 1;
+        console.log(currentResult);
+
+        if (currentResult == 1) {
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".menu-icon").css("display", "none");
+            $(".cd-btn").css("display", "none");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot1").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot1").addClass("currentDot");
+            };
+
+            $(".slide__description").html("살인사건을 둘러싼 치열한 추리 게임, 크라임씬!<br/>사건 현장에 모인 플레이어들은 모두 용의자이며, 범인은 자신에게 유리한 거짓말을 할 수 있다.<br/>누구도 믿을 수 없는 상황 속, 탐정과 용의자들은 오직 단서와 직감을 통해 사건의 진범을 찾아내야 한다.<br/>그 어느 때보다 더욱 어려워진 사건들, 과연 숨 막히는 추리 전쟁의 승자는?");
+        } else if (currentResult == 2) {
+            $(".progress").css("display", "block");
+            $(".cd-btn").css("display", "none");
+            $(".slide__btnAlign").css("margin","60px 0px 0px 0px");
+
+            if (!$("#dot2").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot2").addClass("currentDot");
+            };
+
+            $(".slide__description").html("27대 대통령 선거를 하루 앞둔 오늘 새벽, 유력한 대권 주자였던 저런당 정동필 후보가 싸늘한 주검으로 발견됐습니다.<br/>유례없는 대선 후보 피습 사건으로 정계는 큰 혼란에 빠졌는데요, 사건의 진상과 더불어 범인은 누구인가에 모든 관심이 집중되고 있습니다.<br/><br/><div class='descAlign'><span class='slide__desc2'>※ 버튼 클릭 시 뉴스가 재생됩니다.</span><ul class='progress' onclick='progressClick()'><li data-name='SVG Skill' data-percent='20%'><svg viewbox='-10 -10 22 220'><g fill='none' stroke-width='2' transform='translate(100,100)'><path d='M 0,-100 A 100,100 0 0,1 86.6,-50' stroke='url(#cl1)'/><path d='M 86.6,-50 A 100,100 0 0,1 86.6,50' stroke='url(#cl2)'/><path d='M 86.6,50 A 100,100 0 0,1 0,100' stroke='url(#cl3)'/><path d='M 0,100 A 100,100 0 0,1 -86.6,50' stroke='url(#cl4)'/><path d='M -86.6,50 A 100,100 0 0,1 -86.6,-50' stroke='url(#cl5)'/><path d='M -86.6,-50 A 100,100 0 0,1 0,-100' stroke='url(#cl6)'/></g></svg><svg viewbox='-10 -10 220 220'><path d='M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z' stroke-dashoffset='81'></path></svg></li></ul></div>");
+        } else if (currentResult == 3) {
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".menu-icon").css("display", "none");
+            $(".cd-btn").css("display", "inline-block");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot3").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot3").addClass("currentDot");
+            };
+
+            $(".slide__description").html("탐정님, 탐정 보조입니다. 혹 금일 뉴스를 보셨는지요?<br/>정동필 후보 피습 사건으로 전국이 떠들썩합니다. 경찰에서는 이 골치아픈 사건을 탐정님께서 해결해주시기를 바라고 있습니다. 해당 사건을 보다 자세히 보고드리자면...");
+        } else {
+            currentResult = 1;
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".menu-icon").css("display", "none");
+            $(".cd-btn").css("display", "none");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot1").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot1").addClass("currentDot");
+            };
+
+            $(".slide__description").html("살인사건을 둘러싼 치열한 추리 게임, 크라임씬!<br/>사건 현장에 모인 플레이어들은 모두 용의자이며, 범인은 자신에게 유리한 거짓말을 할 수 있다.<br/>누구도 믿을 수 없는 상황 속, 탐정과 용의자들은 오직 단서와 직감을 통해 사건의 진범을 찾아내야 한다.<br/>그 어느 때보다 더욱 어려워진 사건들, 과연 숨 막히는 추리 전쟁의 승자는?");
+        }
+    });
+
+    $(".prev").click(function() {
+        var currentImg = $(".slide--current")[0].children[0].style.backgroundImage;
+        console.log(currentImg);
+        var currentPlus = currentImg.substring(currentImg.length - 7); // length() 안되면 괄호 빼보기
+        console.log(currentPlus);
+        var currentResult = parseInt(currentPlus) - 1;
+        console.log(currentResult);
+
+        if (currentResult == 1) {
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".cd-btn").css("display", "none");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot1").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot1").addClass("currentDot");
+            };
+
+            $(".slide__description").html("살인사건을 둘러싼 치열한 추리 게임, 크라임씬!<br/>사건 현장에 모인 플레이어들은 모두 용의자이며, 범인은 자신에게 유리한 거짓말을 할 수 있다.<br/>누구도 믿을 수 없는 상황 속, 탐정과 용의자들은 오직 단서와 직감을 통해 사건의 진범을 찾아내야 한다.<br/>그 어느 때보다 더욱 어려워진 사건들, 과연 숨 막히는 추리 전쟁의 승자는?");
+        } else if (currentResult == 2) {
+            $(".progress").css("display", "block");
+            $(".cd-btn").css("display", "none");
+            $(".slide__btnAlign").css("margin","60px 0px 0px 0px");
+
+            if (!$("#dot2").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot2").addClass("currentDot");
+            };
+
+            $(".slide__description").html("27대 대통령 선거를 하루 앞둔 오늘 새벽, 유력한 대권 주자였던 저런당 정동필 후보가 싸늘한 주검으로 발견됐습니다.<br/>유례없는 대선 후보 피습 사건으로 정계는 큰 혼란에 빠졌는데요, 사건의 진상과 더불어 범인은 누구인가에 모든 관심이 집중되고 있습니다.<br/><br/><div class='descAlign'><span class='slide__desc2'>※ 버튼 클릭 시 뉴스가 재생됩니다.</span><ul class='progress'><li data-name='SVG Skill' data-percent='20%'><svg viewbox='-10 -10 22 220'><g fill='none' stroke-width='2' transform='translate(100,100)'><path d='M 0,-100 A 100,100 0 0,1 86.6,-50' stroke='url(#cl1)'/><path d='M 86.6,-50 A 100,100 0 0,1 86.6,50' stroke='url(#cl2)'/><path d='M 86.6,50 A 100,100 0 0,1 0,100' stroke='url(#cl3)'/><path d='M 0,100 A 100,100 0 0,1 -86.6,50' stroke='url(#cl4)'/><path d='M -86.6,50 A 100,100 0 0,1 -86.6,-50' stroke='url(#cl5)'/><path d='M -86.6,-50 A 100,100 0 0,1 0,-100' stroke='url(#cl6)'/></g></svg><svg viewbox='-10 -10 220 220'><path d='M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z' stroke-dashoffset='81'></path></svg></li></ul></div>");
+        } else if (currentResult == 3) {
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".cd-btn").css("display", "inline-block");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot3").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot3").addClass("currentDot");
+            };
+
+            $(".slide__description").html("탐정님, 탐정 보조입니다. 혹 금일 뉴스를 보셨는지요?<br/>정동필 후보 피습 사건으로 전국이 떠들썩합니다. 경찰에서는 이 골치아픈 사건을 탐정님께서 해결해주시기를 바라고 있습니다. 해당 사건을 보다 자세히 보고드리자면...");
+        } else {
+            currentResult = 3;
+            $(".progress").css("display", "none");
+            $(".backBg").css("display", "none");
+            $(".news").css("display", "none");
+            $(".cd-btn").css("display", "inline-block");
+            $(".slide__btnAlign").css("margin","40px 0px 0px 0px");
+
+            if (!$("#dot3").hasClass("currentDot")) {
+                $(".dots div").removeClass("currentDot");
+                console.log("currentDot 가진 사람? : " + $(".dots div").hasClass("currentDot"));
+                $("#dot3").addClass("currentDot");
+            };
+
+            $(".slide__description").html("탐정님, 탐정 보조입니다. 혹 금일 뉴스를 보셨는지요?<br/>정동필 후보 피습 사건으로 전국이 떠들썩합니다. 경찰에서는 이 골치아픈 사건을 탐정님께서 해결해주시기를 바라고 있습니다. 해당 사건을 보다 자세히 보고드리자면...");
+        }
+    });
+
+    /*화면 전환*/
+    $(".cd-btn").click(function() {
+        $(".content").animate({opacity: "0"}, 400);
+        $(".tv").css({display:"block",opacity:"1"});
+        $(".tv").animate({height: "0.4%"}, "slow", function() {
+            $(".tv").css("z-index", "9");
+            $(".tv").animate({width: "30%"}, "slow", function() {
+                $(".tvInside").animate({width: "100%"}, 1000, function() {
+                    $(".tv").animate({width: "100%"}, "slow", function() {
+                        $(".tv").css("z-index", "");
+                        $(".tv").animate({height: "100%"}, 800, function() {
+                            $(".detail_textAlign").css("opacity","0");
+                            /*detail page*/
+                            $(".detail").css("display", "block");
+                            $(".detail").animate({opacity: "1"}, 300, function() {
+                                /*bgmPlay();*/
+                                $(".box_title").animate({opacity:"1"},800, function(){
+                                    $(".navi3").animate({right: "3%"},800);
+                                    $(".box_title").animate({top:"20%",height:"75px"},800, function(){
+                                        $("#summaryLine").animate({height:"85%"},800, function(){
+                                            $("#summaryLine").css({background:"unset", border:"1px solid dimgray", backgroundImage:"url('img/summary.png')", backgroundPosition:"center", backgroundRepeat:"no-repeat", backgroundSize:"cover"});
+                                            $("#summaryLine").animate({width:"30%"},700);
+                                            $(".box_slides").animate({right:"10%"},800, function(){
+                                                $(".detail_textAlign").css("opacity","1");
+                                                unityping();
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                        setTimeout(function() {
+                            $("#csLogo").attr("src", "img/logo_w.png");
+                            $("#logo").animate({opacity:"1"},500);
+                            $(".button").css({border:"0.3px solid white"});
+                            $(".button a").css({color:"white"});
+                            /*$(".b-bun").css("background", "white");*/
+                        }, 500);
+                    });
+                });
+            });
+        });
+    });
+    
+    
+    function unityping() { //\n
+        if(testNum == 0){
+            $("#summaryCtx1").unityping({
+                string: ["오늘 새벽, 환경미화원에 의해 발견된 시신이 유력 대권 주자였던 정동필 후보로 확인되었습니다. 현장에 남겨진 두 가지 정황으로 미루어 타살로 추정되며, 이에 따라 피해자를 살해한 범인을 밝혀야 할 필요가 생겼습니다."],
+                typingSpeed: 900, // 300타/분 (CPM; Characters per Minute)
+                startDelay: 600,
+                eachTyping: function(){
+                    unitNum1++;
+                    testNum++;
+                    /*num ++;
+                    if(num == 338){
+                        btnAnime();
+                    }*/
+                }
+            });
+        }
+    };
+    
+    
+    function unityping2(){
+        $("#summaryCtx2").unityping({
+            string: ["더불어 이번 사건과 관련이 높은 5명을 용의자로 선정하였으니,\n세부 정보와 알리바이를 확인해주시기 바랍니다."],
+            typingSpeed: 900, // 300타/분 (CPM; Characters per Minute)
+            startDelay: 600,
+            eachTyping: function(){
+                unitNum2++;
+            }
+        });
+    };
+
+    
+    function unityping3(){
+        $("#summaryCtx3").unityping({
+            string: ["크라임씬3 대선 후보 살인사건 예고 영상은\n이곳에서 확인하실 수 있습니다."],
+            typingSpeed: 900, // 300타/분 (CPM; Characters per Minute)
+            startDelay: 600,
+            eachTyping: function(){
+                unitNum3++;
+            }
+        });
+    }
+    
+    
+    /*bgm*/
+    function bgmPlay(){
+        var music = document.getElementById("bgm");
+        if (music.paused == true) {
+            music.play();
+        }
+        music.play();
+    }
+    
+    function bgmStop(){
+        var music2 = document.getElementById("bgm");
+        music2.pause();
+    }
+    
+    
+    $(".navi3 li").click(function(e){
+        var scrollName = $(this).data("target");
+        console.log("scrollName : "+scrollName);
+        var scrollPosition = $($(this).attr("data-target")).offset().top;
+        console.log("scrollPosition : "+scrollPosition);
+        $("html, body").animate({scrollTop: scrollPosition}, 600);
+        scrollNavi(scrollName);
+        
+        switch(scrollName){
+            case "#page1":
+                if(unitNum1 == 0){
+                    unityping();
+                }
+                
+                var curteaser = $(".teasers")[0];
+                if (curteaser.paused == false) {
+                    curteaser.pause();
+                }else{
+                    console.log("멈춤 실패");
+                }
+            break;
+
+            case "#page2":
+                if(unitNum2 == 0){
+                    unityping2();
+                }
+                
+                var curteaser = $(".teasers")[0];
+                if (curteaser.paused == false) {
+                    curteaser.pause();
+                }else{
+                    console.log("멈춤 실패");
+                }
+            break;
+                
+            case "#page3":
+                if(unitNum3 == 0){
+                    unityping3();
+                }
+                
+                var curteaser = $(".teasers")[0];
+                console.log(curteaser.currentTime+" / "+curteaser.paused);
+                if (curteaser.currentTime == 0 || curteaser.paused == true) {
+                    curteaser.play();
+                }
+                txtup(e);
+            break;    
+        }
+    });
+    
+    
+    function scrollNavi(sn){
+        switch (sn) {
+            case "#page1":
+                 if($(".navi3 li").hasClass("currentpage")){
+                     $(".navi3 li").removeClass("currentpage");
+                     console.log("currentpage 가진 사람? : "+$(".navi3 li").hasClass("currentpage"));
+                     /*$(this).addClass("currentpage");*/
+                     $(".navi3 #navipage1").addClass("currentpage");
+                 }
+            break;
+            case "#page2":
+                if($(".navi3 li").hasClass("currentpage")){
+                    $(".navi3 li").removeClass("currentpage");
+                    console.log("currentpage 가진 사람? : "+$(".navi3 li").hasClass("currentpage"));
+                    $(".navi3 #navipage2").addClass("currentpage");
+                }
+            break;
+                     
+            case "#page3":
+                 if($(".navi3 li").hasClass("currentpage")){
+                     $(".navi3 li").removeClass("currentpage");
+                     console.log("currentpage 가진 사람? : "+$(".navi3 li").hasClass("currentpage"));
+                     $(".navi3 #navipage3").addClass("currentpage");
+                 }
+            break;
+                     
+            /*case "#page4":
+                if($(".navi3 li").hasClass("currentpage")){
+                    $(".navi3 li").removeClass("currentpage");
+                    console.log("currentpage 가진 사람? : "+$(".navi3 li").hasClass("currentpage"));
+                    $(".navi3 #navipage4").addClass("currentpage");
+                }
+            break;*/
+         }
+    }
+</script>
+
+</html>
